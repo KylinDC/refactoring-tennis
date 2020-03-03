@@ -37,25 +37,16 @@ public class TennisGame1 implements TennisGame {
         int firstPlayerScore = scoreTable.get(firstPlayerName);
         int secondPlayerScore = scoreTable.get(secondPlayerName);
 
+        if (isTwoScoreEquals()) {
+            return getScoreWhenEqual();
+        }
+
+        if (isAnyScoreOverThree()) {
+            return getScoreWhenOverThree();
+        }
+
         String scoreResult = "";
         int tempScore = 0;
-
-        if (firstPlayerScore == secondPlayerScore) {
-            if (firstPlayerScore <= 2) {
-                return scoreMap.get(firstPlayerScore) + "-All";
-            }
-            return "Deuce";
-        }
-
-        if (firstPlayerScore >= 4 || secondPlayerScore >= 4) {
-            int minusResult = firstPlayerScore - secondPlayerScore;
-            if (minusResult == 1) scoreResult = "Advantage player1";
-            else if (minusResult == -1) scoreResult = "Advantage player2";
-            else if (minusResult >= 2) scoreResult = "Win for player1";
-            else scoreResult = "Win for player2";
-            return scoreResult;
-        }
-
         for (int i = 1; i < 3; i++) {
             if (i == 1) tempScore = firstPlayerScore;
             else {
@@ -66,5 +57,33 @@ public class TennisGame1 implements TennisGame {
         }
 
         return scoreResult;
+    }
+
+    private String getScoreWhenOverThree() {
+        int firstPlayerScore = scoreTable.get(firstPlayerName);
+        int secondPlayerScore = scoreTable.get(secondPlayerName);
+
+        int scoreGap = firstPlayerScore - secondPlayerScore;
+        String scorePrefix = Math.abs(scoreGap) == 1 ? "Advantage " : "Win for ";
+        String scorePlayer = scoreGap > 0 ? firstPlayerName : secondPlayerName;
+        return scorePrefix + scorePlayer;
+    }
+
+    private boolean isAnyScoreOverThree() {
+        int firstPlayerScore = scoreTable.get(firstPlayerName);
+        int secondPlayerScore = scoreTable.get(secondPlayerName);
+        return firstPlayerScore >= 4 || secondPlayerScore >= 4;
+    }
+
+    private boolean isTwoScoreEquals() {
+        return scoreTable.get(firstPlayerName).equals(scoreTable.get(secondPlayerName));
+    }
+
+    private String getScoreWhenEqual() {
+        int firstPlayerScore = scoreTable.get(firstPlayerName);
+        if (firstPlayerScore <= 2) {
+            return scoreMap.get(firstPlayerScore) + "-All";
+        }
+        return "Deuce";
     }
 }
