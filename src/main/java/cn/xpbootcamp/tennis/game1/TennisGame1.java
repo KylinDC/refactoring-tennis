@@ -33,6 +33,7 @@ public class TennisGame1 implements TennisGame {
     }
 
     public String getScore() {
+
         if (isTwoScoreEquals()) {
             return getScoreWhenEqual();
         }
@@ -41,18 +42,7 @@ public class TennisGame1 implements TennisGame {
             return getScoreWhenOverThree();
         }
 
-        String scoreResult = "";
-        int tempScore = 0;
-        for (int i = 1; i < 3; i++) {
-            if (i == 1) tempScore = firstPlayerScore;
-            else {
-                scoreResult += "-";
-                tempScore = secondPlayerScore;
-            }
-            scoreResult += scoreMap.get(tempScore);
-        }
-
-        return scoreResult;
+        return scoreMap.get(firstPlayerScore) + "-" + scoreMap.get(secondPlayerScore);
     }
 
     private boolean isTwoScoreEquals() {
