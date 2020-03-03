@@ -1,6 +1,7 @@
 package cn.xpbootcamp.tennis.game1;
 
 import cn.xpbootcamp.tennis.TennisGame;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,12 @@ public class TennisGame1 implements TennisGame {
     private String firstPlayerName;
     private String secondPlayerName;
     private Map<String, Integer> scoreTable = new HashMap<>();
+    private Map<Integer, String> scoreMap = ImmutableMap.<Integer, String>builder()
+            .put(0, "Love")
+            .put(1, "Fifteen")
+            .put(2, "Thirty")
+            .put(3, "Forty")
+            .build();
 
     public TennisGame1(String firstPlayerName, String secondPlayerName) {
         this.firstPlayerName = firstPlayerName;
@@ -30,58 +37,34 @@ public class TennisGame1 implements TennisGame {
         int firstPlayerScore = scoreTable.get(firstPlayerName);
         int secondPlayerScore = scoreTable.get(secondPlayerName);
 
-        String score = "";
+        String scoreResult = "";
         int tempScore = 0;
 
         if (firstPlayerScore == secondPlayerScore) {
-            switch (firstPlayerScore) {
-                case 0:
-                    score = "Love-All";
-                    break;
-                case 1:
-                    score = "Fifteen-All";
-                    break;
-                case 2:
-                    score = "Thirty-All";
-                    break;
-                default:
-                    score = "Deuce";
-                    break;
+            if (firstPlayerScore <= 2) {
+                return scoreMap.get(firstPlayerScore) + "-All";
             }
-            return score;
+            return "Deuce";
         }
 
         if (firstPlayerScore >= 4 || secondPlayerScore >= 4) {
             int minusResult = firstPlayerScore - secondPlayerScore;
-            if (minusResult == 1) score = "Advantage player1";
-            else if (minusResult == -1) score = "Advantage player2";
-            else if (minusResult >= 2) score = "Win for player1";
-            else score = "Win for player2";
-            return score;
+            if (minusResult == 1) scoreResult = "Advantage player1";
+            else if (minusResult == -1) scoreResult = "Advantage player2";
+            else if (minusResult >= 2) scoreResult = "Win for player1";
+            else scoreResult = "Win for player2";
+            return scoreResult;
         }
 
         for (int i = 1; i < 3; i++) {
             if (i == 1) tempScore = firstPlayerScore;
             else {
-                score += "-";
+                scoreResult += "-";
                 tempScore = secondPlayerScore;
             }
-            switch (tempScore) {
-                case 0:
-                    score += "Love";
-                    break;
-                case 1:
-                    score += "Fifteen";
-                    break;
-                case 2:
-                    score += "Thirty";
-                    break;
-                case 3:
-                    score += "Forty";
-                    break;
-            }
+            scoreResult += scoreMap.get(tempScore);
         }
 
-        return score;
+        return scoreResult;
     }
 }
