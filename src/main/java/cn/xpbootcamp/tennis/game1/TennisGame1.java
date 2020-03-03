@@ -34,19 +34,15 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
 
-        if (isTwoScoreEquals()) {
+        if (firstPlayerScore == secondPlayerScore) {
             return getScoreWhenEqual();
         }
 
-        if (isAnyScoreOverThree()) {
-            return getScoreWhenOverThree();
+        if (firstPlayerScore >= 4 || secondPlayerScore >= 4) {
+            return getScoreWhenAnyOverThree();
         }
 
         return scoreMap.get(firstPlayerScore) + "-" + scoreMap.get(secondPlayerScore);
-    }
-
-    private boolean isTwoScoreEquals() {
-        return firstPlayerScore == secondPlayerScore;
     }
 
     private String getScoreWhenEqual() {
@@ -56,11 +52,7 @@ public class TennisGame1 implements TennisGame {
         return "Deuce";
     }
 
-    private boolean isAnyScoreOverThree() {
-        return firstPlayerScore >= 4 || secondPlayerScore >= 4;
-    }
-
-    private String getScoreWhenOverThree() {
+    private String getScoreWhenAnyOverThree() {
         int scoreGap = firstPlayerScore - secondPlayerScore;
         String scorePrefix = Math.abs(scoreGap) == 1 ? "Advantage " : "Win for ";
         String scorePlayer = scoreGap > 0 ? firstPlayerName : secondPlayerName;
