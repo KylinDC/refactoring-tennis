@@ -2,31 +2,39 @@ package cn.xpbootcamp.tennis.game1;
 
 import cn.xpbootcamp.tennis.TennisGame;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TennisGame1 implements TennisGame {
 
-    private int m_score1 = 0;
-    private int m_score2 = 0;
+    public static final int DEFAULT_SCORE = 0;
+
     private String firstPlayerName;
     private String secondPlayerName;
+    private Map<String, Integer> scoreTable = new HashMap<>();
 
     public TennisGame1(String firstPlayerName, String secondPlayerName) {
         this.firstPlayerName = firstPlayerName;
         this.secondPlayerName = secondPlayerName;
+        scoreTable.put(firstPlayerName, DEFAULT_SCORE);
+        scoreTable.put(secondPlayerName, DEFAULT_SCORE);
     }
 
     public void wonPoint(String playerName) {
-        if (playerName.equals(firstPlayerName))
-            m_score1 += 1;
-        else
-            m_score2 += 1;
+        if (scoreTable.containsKey(playerName)) {
+            scoreTable.put(playerName, scoreTable.get(playerName) + 1);
+        }
     }
 
     public String getScore() {
+        int firstPlayerScore = scoreTable.get(firstPlayerName);
+        int secondPlayerScore = scoreTable.get(secondPlayerName);
+
         String score = "";
         int tempScore = 0;
 
-        if (m_score1 == m_score2) {
-            switch (m_score1) {
+        if (firstPlayerScore == secondPlayerScore) {
+            switch (firstPlayerScore) {
                 case 0:
                     score = "Love-All";
                     break;
@@ -43,8 +51,8 @@ public class TennisGame1 implements TennisGame {
             return score;
         }
 
-        if (m_score1 >= 4 || m_score2 >= 4) {
-            int minusResult = m_score1 - m_score2;
+        if (firstPlayerScore >= 4 || secondPlayerScore >= 4) {
+            int minusResult = firstPlayerScore - secondPlayerScore;
             if (minusResult == 1) score = "Advantage player1";
             else if (minusResult == -1) score = "Advantage player2";
             else if (minusResult >= 2) score = "Win for player1";
@@ -53,10 +61,10 @@ public class TennisGame1 implements TennisGame {
         }
 
         for (int i = 1; i < 3; i++) {
-            if (i == 1) tempScore = m_score1;
+            if (i == 1) tempScore = firstPlayerScore;
             else {
                 score += "-";
-                tempScore = m_score2;
+                tempScore = secondPlayerScore;
             }
             switch (tempScore) {
                 case 0:
