@@ -34,15 +34,23 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
 
-        if (firstPlayerScore == secondPlayerScore) {
+        if (isTwoScoreEquals()) {
             return getScoreWhenEqual();
         }
 
-        if (firstPlayerScore >= 4 || secondPlayerScore >= 4) {
+        if (isAnyScoreOverThree()) {
             return getScoreWhenAnyOverThree();
         }
 
         return scoreMap.get(firstPlayerScore) + "-" + scoreMap.get(secondPlayerScore);
+    }
+
+    private boolean isAnyScoreOverThree() {
+        return firstPlayerScore >= 4 || secondPlayerScore >= 4;
+    }
+
+    private boolean isTwoScoreEquals() {
+        return firstPlayerScore == secondPlayerScore;
     }
 
     private String getScoreWhenEqual() {
